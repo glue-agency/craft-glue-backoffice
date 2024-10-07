@@ -1,0 +1,40 @@
+{
+    "name": "glue-agency/craft-glue-backoffice",
+    "description": "Backoffice managment and insight",
+    "type": "craft-plugin",
+    "license": "mit",
+    "support": {
+        "email": "support@glue.be",
+        "issues": "https://github.com/glue-agency/craft-glue-backoffice/issues?state=open",
+        "source": "https://github.com/glue-agency/craft-glue-backoffice",
+        "docs": "https://github.com/glue-agency/craft-glue-backoffice",
+        "rss": "https://github.com/glue-agency/craft-glue-backoffice/releases.atom"
+    },
+    "require": {
+        "php": ">=8.0.2",
+        "craftcms/cms": "^4.3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "GlueAgency\\Backoffice\\": "src/"
+        }
+    },
+    "extra": {
+        "handle": "glue-backoffice",
+        "name": "Glue Backoffice",
+        "developer": "Glue Agency",
+        "documentationUrl": "https://github.com/glue-agency/craft-glue-backoffice",
+        "class": "GlueAgency\\Backoffice\\Backoffice"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.0.2"
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
+    }
+}
+

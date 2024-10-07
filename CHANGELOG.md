@@ -1,4 +1,4 @@
 # Release Notes for Glue Backoffice
 
-## 1.0.0
-- Initial release
+## 5.0.0
+- Initial Plugin release

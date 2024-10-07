@@ -1,30 +1,35 @@
 # Glue Backoffice
 
-Backoffice managment and insight
+Backoffice and insight
 
 ## Requirements
 
-This plugin requires Craft CMS 4.3.5 or later, and PHP 8.0.2 or later.
+This plugin requires Craft CMS 5.0.0 or later, and PHP 8.2 or later.
 
 ## Installation
 
-You can install this plugin from the Plugin Store or with Composer.
+Create a glue-backoffice.php file in the /config folder with this config
 
-#### From the Plugin Store
+```php
+return [
+    'url'   => getenv('GLUE_BACKOFFICE_URL'),
+    'token' => getenv('GLUE_BACKOFFICE_TOKEN'),
+];
+```
+Finally add the env vars to your .env and .env.example.
 
-Go to the Plugin Store in your project’s Control Panel and search for “Glue Backoffice”. Then press “Install”.
-
-#### With Composer
+```
+# Glue Backoffice
+GLUE_BACKOFFICE_URL="https://dashboard.glue.be/"
+GLUE_BACKOFFICE_TOKEN=""
+```
 
 Open your terminal and run the following commands:
 
 ```bash
-# go to the project directory
-cd /path/to/my-project.test
-
-# tell Composer to load the plugin
+# Require the plugin through composer
 composer require glue-agency/craft-glue-backoffice
 
-# tell Craft to install the plugin
-./craft plugin/install glue-backoffice
+# Install the plugin
+php craft plugin/install glue-backoffice
 ```

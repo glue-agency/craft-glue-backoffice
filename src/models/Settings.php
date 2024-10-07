@@ -2,7 +2,6 @@
 
 namespace GlueAgency\Backoffice\models;
 
-use Craft;
 use craft\base\Model;
 
 /**
@@ -10,4 +9,7 @@ use craft\base\Model;
  */
 class Settings extends Model
 {
+
+    public ?string $url = null;
+    public ?string $token = null;
 }

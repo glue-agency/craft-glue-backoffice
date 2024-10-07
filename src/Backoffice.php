@@ -3,29 +3,38 @@
 namespace GlueAgency\Backoffice;
 
 use Craft;
+use GlueAgency\Backoffice\clients\GlueClient;
 use GlueAgency\Backoffice\models\Settings;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\events\RegisterTemplateRootsEvent;
+use craft\web\View;
+use yii\base\Event;
 
 /**
  * Glue Backoffice plugin
  *
+ * @property-read GlueClient     $client
+ *
  * @method static Backoffice getInstance()
+ *
  * @method Settings getSettings()
- * @author Glue Agency <support@glue.be>
+ * @method GlueClient getClient()
+ *
+ * @author    Glue Agency <support@glue.be>
  * @copyright Glue Agency
- * @license MIT
+ * @license   MIT
  */
 class Backoffice extends Plugin
 {
+
     public string $schemaVersion = '1.0.0';
-    public bool $hasCpSettings = true;
 
     public static function config(): array
     {
         return [
             'components' => [
-                // Define component configs here...
+                'client' => GlueClient::class,
             ],
         ];
     }
@@ -34,10 +43,11 @@ class Backoffice extends Plugin
     {
         parent::init();
 
+        Craft::setAlias('@glue-backoffice', __DIR__);
+
         // Defer most setup tasks until Craft is fully initialized
         Craft::$app->onInit(function() {
-            $this->attachEventHandlers();
-            // ...
+            $this->registerControllers();
         });
     }
 
@@ -48,15 +58,31 @@ class Backoffice extends Plugin
 
     protected function settingsHtml(): ?string
     {
-        return Craft::$app->view->renderTemplate('glue-backoffice/_settings.twig', [
-            'plugin' => $this,
+        return Craft::$app->view->renderTemplate('glue-backoffice/settings/index.twig', [
+            'plugin'   => $this,
             'settings' => $this->getSettings(),
         ]);
     }
 
-    private function attachEventHandlers(): void
+    protected function registerControllers(): void
     {
-        // Register event handlers here ...
-        // (see https://craftcms.com/docs/4.x/extend/events.html to get started)
+        if(Craft::$app->getRequest()->getIsConsoleRequest()) {
+            $this->controllerNamespace = 'GlueAgency\\Backoffice\\console\\controllers';
+
+            return;
+        }
+
+        $this->controllerNamespace = 'GlueAgency\\Backoffice\\controllers';
+    }
+
+    protected function registerCpPluginTemplates(): void
+    {
+        Event::on(
+            View::class,
+            View::EVENT_REGISTER_CP_TEMPLATE_ROOTS,
+            function(RegisterTemplateRootsEvent $event) {
+                $event->roots['glue-backoffice'] = '@glue-backoffice/templates';
+            }
+        );
     }
 }

@@ -1,0 +1,25 @@
+{% import '_includes/forms.twig' as forms %}
+
+{% block contact %}
+    {{ forms.autosuggestField({
+        first: true,
+        label: "Master url"|t('glue-backoffice'),
+        id: 'name',
+        name: 'name',
+        required: true,
+        value: settings.url,
+        errors: settings.getErrors('url'),
+        suggestEnvVars: true,
+    }) }}
+
+    {{ forms.autosuggestField({
+        first: true,
+        label: "Token"|t('glue-backoffice'),
+        id: 'token',
+        name: 'token',
+        required: true,
+        value: settings.token,
+        suggestEnvVars: true,
+        errors: settings.getErrors('token'),
+    }) }}
+{% endblock %}

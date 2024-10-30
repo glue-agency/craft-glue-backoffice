@@ -21,11 +21,16 @@ class ReportController extends Controller
 
     public function beforeAction($action): bool
     {
+        if(Craft::$app->env !== 'production') {
+            $this->stdout('Not running in production mode. Not reporting.', Console::BG_RED);
+
+            return ExitCode::OK;
+        }
+
         $settings = Backoffice::getInstance()->settings;
 
         if(! $settings->url) {
             throw new Exception('The master url is missing.');
-
         }
 
         if(! $settings->token) {
@@ -42,12 +47,6 @@ class ReportController extends Controller
      */
     public function actionIndex()
     {
-        if(Craft::$app->env !== 'production') {
-            $this->stdout('Not running in production mode. Not reporting.', Console::BG_RED);
-
-            return ExitCode::OK;
-        }
-
         Backoffice::getInstance()->client->reporting()->report([
             'title'    => $name = Craft::$app->getSystemName(),
             'version' => $version = Craft::$app->getVersion(),

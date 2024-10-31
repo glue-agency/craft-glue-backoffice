@@ -11,7 +11,7 @@
         "rss": "https://github.com/glue-agency/craft-glue-backoffice/releases.atom"
     },
     "require": {
-        "php": "^7.0",
+        "php": "^7.0 || ^8.0",
         "craftcms/cms": "^3.0.0"
     },
     "autoload": {

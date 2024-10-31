@@ -10,6 +10,6 @@ use craft\base\Model;
 class Settings extends Model
 {
 
-    public ?string $url = null;
-    public ?string $token = null;
+    public $url = null;
+    public $token = null;
 }

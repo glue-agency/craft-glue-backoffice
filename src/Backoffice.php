@@ -28,35 +28,43 @@ use yii\base\Event;
 class Backoffice extends Plugin
 {
 
-    public string $schemaVersion = '1.0.0';
+    public $schemaVersion = '1.0.0';
 
-    public static function config(): array
-    {
-        return [
-            'components' => [
-                'client' => GlueClient::class,
-            ],
-        ];
-    }
-
-    public function init(): void
+    /**
+     * @return void
+     */
+    public function init()
     {
         parent::init();
 
         Craft::setAlias('@glue-backoffice', __DIR__);
 
-        // Defer most setup tasks until Craft is fully initialized
-        Craft::$app->onInit(function() {
-            $this->registerControllers();
-        });
+        $this->setComponents([
+            'client' => GlueClient::class,
+        ]);
+
+        $this->registerControllers();
     }
 
-    protected function createSettingsModel(): ?Model
+    /**
+     * @throws \yii\base\InvalidConfigException
+     *
+     * @return Model|object|null
+     */
+    protected function createSettingsModel()
     {
         return Craft::createObject(Settings::class);
     }
 
-    protected function settingsHtml(): ?string
+    /**
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \yii\base\Exception
+     *
+     * @return string|null
+     */
+    protected function settingsHtml()
     {
         return Craft::$app->view->renderTemplate('glue-backoffice/settings/index.twig', [
             'plugin'   => $this,
@@ -64,7 +72,10 @@ class Backoffice extends Plugin
         ]);
     }
 
-    protected function registerControllers(): void
+    /**
+     * @return void
+     */
+    protected function registerControllers()
     {
         if(Craft::$app->getRequest()->getIsConsoleRequest()) {
             $this->controllerNamespace = 'GlueAgency\\Backoffice\\console\\controllers';
@@ -75,7 +86,10 @@ class Backoffice extends Plugin
         $this->controllerNamespace = 'GlueAgency\\Backoffice\\controllers';
     }
 
-    protected function registerCpPluginTemplates(): void
+    /**
+     * @return void
+     */
+    protected function registerCpPluginTemplates()
     {
         Event::on(
             View::class,

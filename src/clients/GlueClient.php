@@ -10,19 +10,28 @@ use GuzzleHttp\Client;
 class GlueClient
 {
 
-    protected Client $client;
+    /**
+     * @var Client
+     */
+    protected $client;
 
     public function __construct()
     {
         $this->client = $this->buildClient();
     }
 
-    public function reporting(): ReportingEndpoint
+    /**
+     * @return ReportingEndpoint
+     */
+    public function reporting()
     {
         return new ReportingEndpoint($this);
     }
 
-    protected function buildClient(): Client
+    /**
+     * @return Client
+     */
+    protected function buildClient()
     {
         $settings = Backoffice::getInstance()->getSettings();
 
@@ -37,6 +46,12 @@ class GlueClient
         ]);
     }
 
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $arguments)
     {
         return call_user_func_array([$this->client, $name], $arguments);

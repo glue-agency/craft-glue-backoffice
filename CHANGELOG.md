@@ -1,7 +1,4 @@
 # Release Notes for Glue Backoffice
 
-## 5.0.1
-- Fix env check priority
-
-## 5.0.0
-- Initial Plugin release
+## 3.0.0
+- Plugin port from 5.0.1

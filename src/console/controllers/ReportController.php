@@ -19,7 +19,13 @@ use yii\db\Query;
 class ReportController extends Controller
 {
 
-    public function beforeAction($action): bool
+    /**
+     * @param $action
+     *
+     * @throws Exception
+     * @return bool|int
+     */
+    public function beforeAction($action)
     {
         if(Craft::$app->env !== 'production') {
             $this->stdout('Not running in production mode. Not reporting.', Console::BG_RED);
@@ -56,8 +62,8 @@ class ReportController extends Controller
                     'title'    => $site->name,
                     'handle'   => $site->handle,
                     'language' => $site->language,
-                    'enabled'  => $site->enabled,
-                    'url'      => $site->baseUrl,
+                    'enabled'  => true,
+                    'url'      => Craft::getAlias($site->baseUrl),
                     'uid'      => $site->uid,
                 ];
             }, Craft::$app->getSites()->getAllSites(true)),

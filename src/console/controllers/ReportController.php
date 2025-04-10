@@ -80,7 +80,7 @@ class ReportController extends Controller
         }
         $this->stdout("Plugins\n", Console::FG_GREEN);
         foreach($plugins as $plugin) {
-            $this->stdout("    Plugin '{$plugin['title']}' v'{$version}'\n");
+            $this->stdout("    Plugin '{$plugin['title']}' v'{$plugin['version']}'\n");
         }
 
         return ExitCode::OK;

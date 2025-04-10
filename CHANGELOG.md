@@ -1,5 +1,8 @@
 # Release Notes for Glue Backoffice
 
+## 3.0.2
+- Fix Craft CMS version being shown when outputting plugin versions
+
 ## 3.0.1
 - Allow PHP 8.0
 

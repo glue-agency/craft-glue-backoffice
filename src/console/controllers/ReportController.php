@@ -20,6 +20,23 @@ class ReportController extends Controller
 {
 
     /**
+     * @var string|null The Bitbucket repository this install deploys from.
+     */
+    public $repositoryName;
+
+    /**
+     * @param string $actionID
+     *
+     * @return string[]
+     */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), [
+            'repositoryName',
+        ]);
+    }
+
+    /**
      * @param $action
      *
      * @throws Exception
@@ -54,10 +71,10 @@ class ReportController extends Controller
     public function actionIndex()
     {
         Backoffice::getInstance()->client->reporting()->report([
-            'title'    => $name = Craft::$app->getSystemName(),
-            'version' => $version = Craft::$app->getVersion(),
-            'uid' => Craft::$app->getSystemUid(),
-            'sites'   => $sites = array_map(function(Site $site) {
+            'title'      => $name = Craft::$app->getSystemName(),
+            'version'    => $version = Craft::$app->getVersion(),
+            'uid'        => Craft::$app->getSystemUid(),
+            'sites'      => $sites = array_map(function(Site $site) {
                 return [
                     'title'    => $site->name,
                     'handle'   => $site->handle,
@@ -67,7 +84,7 @@ class ReportController extends Controller
                     'uid'      => $site->uid,
                 ];
             }, Craft::$app->getSites()->getAllSites(true)),
-            'plugins' => $plugins = array_map(function(Plugin $plugin) {
+            'plugins'    => $plugins = array_map(function(Plugin $plugin) {
                 return [
                     'title'     => $plugin->name,
                     'handle'    => $plugin->handle,
@@ -77,6 +94,9 @@ class ReportController extends Controller
                     'uid'       => (new Query)->from(Table::PLUGINS)->where(['handle' => $plugin->handle])->one()['uid'],
                 ];
             }, array_values(Craft::$app->getPlugins()->getAllPlugins())),
+            'repository' => [
+                'name' => $this->repositoryName,
+            ],
         ]);
 
         $this->stdout("Reported Craft CMS '{$name}' v'{$version}'\n", Console::FG_GREEN);
@@ -88,6 +108,8 @@ class ReportController extends Controller
         foreach($plugins as $plugin) {
             $this->stdout("    Plugin '{$plugin['title']}' v'{$plugin['version']}'\n");
         }
+        $this->stdout("Repository\n", Console::FG_GREEN);
+        $this->stdout("    Name '{$this->repositoryName}'\n");
 
         return ExitCode::OK;
     }

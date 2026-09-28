@@ -33,3 +33,24 @@ composer require glue-agency/craft-glue-backoffice
 # Install the plugin
 php craft plugin/install glue-backoffice
 ```
+
+## Reporting
+
+After each deploy, report the install to the Glue Dashboard. The command only reports in the `production` environment.
+
+```bash
+php craft glue-backoffice/report --repository-name=git@bitbucket.org:glue-team/project.git
+```
+
+`--repository-name` is optional: without it, the repository is left out of the report.
+
+From a Deployer `deploy.php`:
+
+```php
+desc('Report to backoffice');
+task('glue:backoffice_report', function() {
+    call_user_func(craft('glue-backoffice/report --repository-name={{repository}}'));
+});
+
+after('deploy:symlink', 'glue:backoffice_report');
+```

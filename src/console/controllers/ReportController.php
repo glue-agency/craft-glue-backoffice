@@ -5,6 +5,7 @@ namespace GlueAgency\Backoffice\console\controllers;
 use Craft;
 use craft\base\Plugin;
 use craft\db\Table;
+use craft\helpers\App;
 use craft\helpers\Console;
 use craft\models\Site;
 use GlueAgency\Backoffice\Backoffice;
@@ -62,6 +63,7 @@ class ReportController extends Controller
         Backoffice::getInstance()->client->reporting()->report([
             'title'      => $name = Craft::$app->getSystemName(),
             'version'    => $version = Craft::$app->getVersion(),
+            'phpVersion' => $phpVersion = App::phpVersion(),
             'uid'        => Craft::$app->getSystemUid(),
             'sites'      => $sites = array_map(function(Site $site) {
                 return [
@@ -89,6 +91,7 @@ class ReportController extends Controller
         ]);
 
         $this->stdout("Reported Craft CMS '{$name}' v'{$version}'\n", Console::FG_GREEN);
+        $this->stdout("    PHP v'{$phpVersion}'\n");
         $this->stdout("Sites\n", Console::FG_GREEN);
         foreach($sites as $site) {
             $this->stdout("    Site '{$site['title']} ({$site['language']})'\n");

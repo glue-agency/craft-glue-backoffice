@@ -44,6 +44,8 @@ php craft glue-backoffice/report --repository-name=git@bitbucket.org:glue-team/p
 
 `--repository-name` is optional: without it, the repository is left out of the report.
 
+The site's PHP version is reported as well.
+
 From a Deployer `deploy.php`:
 
 ```php

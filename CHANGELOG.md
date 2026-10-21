@@ -1,5 +1,8 @@
 # Release Notes for Glue Backoffice
 
+## 3.2.0
+- Report the site's PHP version
+
 ## 3.1.0
 - Report the repository name, passed to the report command as `--repository-name`
 

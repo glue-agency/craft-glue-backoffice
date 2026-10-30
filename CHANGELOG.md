@@ -1,5 +1,8 @@
 # Release Notes for Glue Backoffice
 
+## 3.3.0
+- Report the Composer packages the project requires directly, with their installed version and description
+
 ## 3.2.0
 - Report the site's PHP version
 

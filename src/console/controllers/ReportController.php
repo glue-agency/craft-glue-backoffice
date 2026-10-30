@@ -3,16 +3,15 @@
 namespace GlueAgency\Backoffice\console\controllers;
 
 use Craft;
-use craft\base\Plugin;
-use craft\db\Table;
 use craft\helpers\App;
 use craft\helpers\Console;
 use craft\models\Site;
 use GlueAgency\Backoffice\Backoffice;
+use GlueAgency\Backoffice\dto\Package;
+use GlueAgency\Backoffice\dto\Plugin;
 use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
-use yii\db\Query;
 
 /**
  * Reports CMS data.
@@ -65,7 +64,7 @@ class ReportController extends Controller
     }
 
     /**
-     * Reports the current Craft version and Plugin versions.
+     * Reports the current Craft version, Plugin versions and Composer packages.
      *
      * @return int
      */
@@ -92,10 +91,16 @@ class ReportController extends Controller
                     'handle'    => $plugin->handle,
                     'version'   => $plugin->version,
                     'developer' => $plugin->developer,
-                    // @todo there must be a better way
-                    'uid'       => (new Query)->from(Table::PLUGINS)->where(['handle' => $plugin->handle])->one()['uid'],
+                    'uid'       => $plugin->uid,
                 ];
-            }, array_values(Craft::$app->getPlugins()->getAllPlugins())),
+            }, Backoffice::getInstance()->plugins->getAllPlugins()),
+            'packages'   => $packages = array_map(function(Package $package) {
+                return [
+                    'name'        => $package->name,
+                    'version'     => $package->version,
+                    'description' => $package->getTruncatedDescription(),
+                ];
+            }, Backoffice::getInstance()->packages->getAllPackages()),
             'repository' => [
                 'name' => $this->repositoryName,
             ],
@@ -110,6 +115,10 @@ class ReportController extends Controller
         $this->stdout("Plugins\n", Console::FG_GREEN);
         foreach($plugins as $plugin) {
             $this->stdout("    Plugin '{$plugin['title']}' v'{$plugin['version']}'\n");
+        }
+        $this->stdout("Packages\n", Console::FG_GREEN);
+        foreach($packages as $package) {
+            $this->stdout("    Package '{$package['name']}' v'{$package['version']}'\n");
         }
         $this->stdout("Repository\n", Console::FG_GREEN);
         $this->stdout("    Name '{$this->repositoryName}'\n");

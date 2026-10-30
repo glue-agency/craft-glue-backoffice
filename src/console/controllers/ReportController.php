@@ -60,6 +60,7 @@ class ReportController extends Controller
     public function actionIndex()
     {
         Backoffice::getInstance()->client->reporting()->report([
+            'platform'   => 'craft',
             'title'      => $name = Craft::$app->getSystemName(),
             'version'    => $version = Craft::$app->getVersion(),
             'phpVersion' => $phpVersion = App::phpVersion(),

@@ -2,6 +2,7 @@
 
 ## 5.3.0
 - Report the Composer packages the project requires directly, with their installed version and description
+- Fix how the report command prints versions: `'v5.6.1'` instead of `v'5.6.1'`, with no `v` added to a version that already has one or is a branch
 
 ## 5.2.0
 - Report the site's PHP version

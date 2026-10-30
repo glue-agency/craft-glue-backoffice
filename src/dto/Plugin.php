@@ -2,11 +2,15 @@
 
 namespace GlueAgency\Backoffice\dto;
 
+use GlueAgency\Backoffice\dto\concerns\HasVersion;
+
 /**
  * An installed Craft plugin. Treat as read-only.
  */
 class Plugin
 {
+
+    use HasVersion;
 
     /**
      * @var string

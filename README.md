@@ -44,7 +44,7 @@ php craft glue-backoffice/report --repository-name=git@bitbucket.org:glue-team/p
 
 `--repository-name` is optional: without it, the repository is left out of the report.
 
-The site's PHP version is reported as well.
+The site's PHP version is reported as well, and so are the Composer packages the project requires directly: its root `composer.json`'s `require`, not its whole lock file, each with the installed version and description. Craft itself is among them as `craftcms/cms`, and so are the plugins; platform requirements (`php`, `ext-*`) are left out.
 
 From a Deployer `deploy.php`:
 

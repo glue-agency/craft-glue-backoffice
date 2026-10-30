@@ -5,6 +5,8 @@ namespace GlueAgency\Backoffice;
 use Craft;
 use GlueAgency\Backoffice\clients\GlueClient;
 use GlueAgency\Backoffice\models\Settings;
+use GlueAgency\Backoffice\services\Packages;
+use GlueAgency\Backoffice\services\Plugins;
 use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterTemplateRootsEvent;
@@ -15,6 +17,8 @@ use yii\base\Event;
  * Glue Backoffice plugin
  *
  * @property-read GlueClient     $client
+ * @property-read Packages       $packages
+ * @property-read Plugins        $plugins
  *
  * @method static Backoffice getInstance()
  *
@@ -34,7 +38,9 @@ class Backoffice extends Plugin
     {
         return [
             'components' => [
-                'client' => GlueClient::class,
+                'client'   => GlueClient::class,
+                'packages' => Packages::class,
+                'plugins'  => Plugins::class,
             ],
         ];
     }

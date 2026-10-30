@@ -75,7 +75,7 @@ class ReportController extends Controller
             'version'    => $version = Craft::$app->getVersion(),
             'phpVersion' => $phpVersion = App::phpVersion(),
             'uid'        => Craft::$app->getSystemUid(),
-            'sites'      => $sites = array_map(function(Site $site) {
+            'sites'      => array_map(function(Site $site) {
                 return [
                     'title'    => $site->name,
                     'handle'   => $site->handle,
@@ -84,8 +84,8 @@ class ReportController extends Controller
                     'url'      => Craft::getAlias($site->baseUrl),
                     'uid'      => $site->uid,
                 ];
-            }, Craft::$app->getSites()->getAllSites(true)),
-            'plugins'    => $plugins = array_map(function(Plugin $plugin) {
+            }, $sites = Craft::$app->getSites()->getAllSites(true)),
+            'plugins'    => array_map(function(Plugin $plugin) {
                 return [
                     'title'     => $plugin->name,
                     'handle'    => $plugin->handle,
@@ -93,32 +93,32 @@ class ReportController extends Controller
                     'developer' => $plugin->developer,
                     'uid'       => $plugin->uid,
                 ];
-            }, Backoffice::getInstance()->plugins->getAllPlugins()),
-            'packages'   => $packages = array_map(function(Package $package) {
+            }, $plugins = Backoffice::getInstance()->plugins->getAllPlugins()),
+            'packages'   => array_map(function(Package $package) {
                 return [
                     'name'        => $package->name,
                     'version'     => $package->version,
                     'description' => $package->getTruncatedDescription(),
                 ];
-            }, Backoffice::getInstance()->packages->getAllPackages()),
+            }, $packages = Backoffice::getInstance()->packages->getAllPackages()),
             'repository' => [
                 'name' => $this->repositoryName,
             ],
         ]);
 
-        $this->stdout("Reported Craft CMS '{$name}' v'{$version}'\n", Console::FG_GREEN);
-        $this->stdout("    PHP v'{$phpVersion}'\n");
+        $this->stdout("Reported Craft CMS '{$name}' 'v{$version}'\n", Console::FG_GREEN);
+        $this->stdout("    PHP 'v{$phpVersion}'\n");
         $this->stdout("Sites\n", Console::FG_GREEN);
         foreach($sites as $site) {
-            $this->stdout("    Site '{$site['title']} ({$site['language']})'\n");
+            $this->stdout("    Site '{$site->name} ({$site->language})'\n");
         }
         $this->stdout("Plugins\n", Console::FG_GREEN);
         foreach($plugins as $plugin) {
-            $this->stdout("    Plugin '{$plugin['title']}' v'{$plugin['version']}'\n");
+            $this->stdout("    Plugin '{$plugin->name}' '{$plugin->getFormattedVersion()}'\n");
         }
         $this->stdout("Packages\n", Console::FG_GREEN);
         foreach($packages as $package) {
-            $this->stdout("    Package '{$package['name']}' v'{$package['version']}'\n");
+            $this->stdout("    Package '{$package->name}' '{$package->getFormattedVersion()}'\n");
         }
         $this->stdout("Repository\n", Console::FG_GREEN);
         $this->stdout("    Name '{$this->repositoryName}'\n");

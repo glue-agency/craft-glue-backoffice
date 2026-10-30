@@ -1,6 +1,7 @@
 # Release Notes for Glue Backoffice
 
 ## 3.3.0
+- Report the platform, `craft`, as `platform`, the way the Magento reporter names its own
 - Report the Composer packages the project requires directly, with their installed version and description
 - Fix how the report command prints versions: `'v5.6.1'` instead of `v'5.6.1'`, with no `v` added to a version that already has one or is a branch
 

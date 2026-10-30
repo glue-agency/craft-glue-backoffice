@@ -2,11 +2,15 @@
 
 namespace GlueAgency\Backoffice\dto;
 
+use GlueAgency\Backoffice\dto\concerns\HasVersion;
+
 /**
  * A Composer package the project requires directly. Treat as read-only.
  */
 class Package
 {
+
+    use HasVersion;
 
     protected const DESCRIPTION_MAX_LENGTH = 255;
 

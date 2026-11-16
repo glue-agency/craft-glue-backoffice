@@ -1,5 +1,12 @@
 # Release Notes for Glue Backoffice
 
+## 3.4.0
+- Report from every environment, named by `CRAFT_ENVIRONMENT`: `production` (or `prod`, `live`) sends the whole report, any other environment only where each site answers there, which the Dashboard lists beside live's
+- Send the environment with live's report too
+- Without a token, a host other than live names its environment and reports nothing; live still fails the deploy
+- Every report says which environment it came from and prints each site's URL
+- Needs a Dashboard that knows environments (Nov 2026): an older one refuses a report from anywhere but live
+
 ## 3.3.0
 - Report the platform, `craft`, as `platform`, the way the Magento reporter names its own
 - Report the Composer packages the project requires directly, with their installed version and description
